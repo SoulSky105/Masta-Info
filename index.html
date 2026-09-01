@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mastamaru UMPO 2026 — Sistem Presensi</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+  :root{
+    --maroon-950:#20080a;
+    --maroon-900:#3a0f0c;
+    --maroon-800:#5a1810;
+    --maroon-700:#7a2414;
+    --gold-500:#f2a63d;
+    --gold-400:#f7c268;
+    --amber-600:#e8792e;
+    --cream-100:#f7ecdb;
+    --cream-050:#fdf7ee;
+    --line: rgba(247,236,219,0.22);
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+
+  html,body{
+    background:var(--maroon-950);
+    color:var(--cream-100);
+    font-family:'Plus Jakarta Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    padding: 32px 16px 60px;
+  }
+
+  /* =====================================================================
+     GANTI GAMBAR LATAR BELAKANG DI SINI
+     File: images/background.jpg
+     Cukup timpa file itu dengan gambar lain (ukuran persegi disarankan,
+     misal 480x480px) — path di bawah ini tidak perlu diubah.
+     ===================================================================== */
+  .page-bg{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    background-image:
+      linear-gradient(180deg, rgba(32,8,10,0.88) 0%, rgba(58,15,12,0.90) 40%, rgba(20,6,7,0.96) 100%),
+      url('images/background.jpg');
+    background-size: cover, 480px 480px;
+    background-position: center, center;
+    background-repeat: no-repeat, repeat;
+  }
+
+  .frame{
+    position:relative;
+    z-index:1;
+    width:100%;
+    max-width:460px;
+  }
+
+  /* ---------- Header ---------- */
+  header{
+    text-align:center;
+    padding-top:6px;
+  }
+
+  .eyebrow{
+    font-size:11px;
+    letter-spacing:0.12em;
+    color:var(--gold-400);
+    font-weight:600;
+    text-transform:uppercase;
+  }
+
+  .subtitle{
+    margin-top:10px;
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-weight:600;
+    font-size:16px;
+    color:var(--cream-050);
+    line-height:1.4;
+  }
+  .subtitle b{ font-weight:700; color:var(--gold-500); font-style:normal;}
+
+  /* ---------- Hero (logo Mastamaru) ---------- */
+  .hero{
+    margin-top:20px;
+    position:relative;
+    border-radius:28px;
+    overflow:hidden;
+    box-shadow: 0 18px 46px rgba(0,0,0,0.55), 0 0 0 1px var(--line);
+  }
+  .hero img{
+    display:block;
+    width:100%;
+    height:auto;
+  }
+  .hero::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg, rgba(32,8,10,0) 55%, rgba(20,6,7,0.65) 100%);
+  }
+  .hero-caption{
+    position:absolute;
+    left:0; right:0; bottom:14px;
+    text-align:center;
+    z-index:2;
+  }
+  .hero-caption span{
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-style:italic;
+    font-size:15px;
+    color:var(--cream-050);
+    background:rgba(20,6,7,0.45);
+    padding:5px 16px;
+    border-radius:999px;
+    border:1px solid var(--line);
+  }
+
+  /* ---------- Section labels ---------- */
+  .section{
+    margin-top:36px;
+  }
+  .section-label{
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size:19px;
+    color:var(--gold-400);
+    text-align:center;
+  }
+  .section-label em{
+    font-style:italic;
+    color:var(--cream-050);
+    font-weight:600;
+  }
+  .section-rule{
+    width:44px;
+    height:2px;
+    margin:10px auto 18px;
+    background:linear-gradient(90deg, transparent, var(--gold-500), transparent);
+  }
+
+  /* ---------- Buttons ---------- */
+  .btn-stack{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+
+  .btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    text-align:center;
+    text-decoration:none;
+    font-family:'Plus Jakarta Sans', sans-serif;
+    font-weight:700;
+    font-size:14.5px;
+    color:var(--maroon-950);
+    padding:15px 20px;
+    border-radius:999px;
+    background:linear-gradient(135deg, var(--gold-400), var(--amber-600));
+    box-shadow: 0 8px 20px rgba(232,121,46,0.28), inset 0 1px 0 rgba(255,255,255,0.35);
+    border:1px solid rgba(255,224,170,0.6);
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+  .btn:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 12px 26px rgba(232,121,46,0.38), inset 0 1px 0 rgba(255,255,255,0.4);
+  }
+  .btn:active{ transform: translateY(0); }
+
+  .btn.secondary{
+    background:transparent;
+    color:var(--cream-050);
+    border:1.5px solid var(--gold-500);
+    box-shadow:none;
+    font-weight:600;
+  }
+  .btn.secondary:hover{
+    background:rgba(242,166,61,0.12);
+  }
+
+  .btn.ghost{
+    background:rgba(247,236,219,0.06);
+    color:var(--cream-050);
+    border:1px solid var(--line);
+    box-shadow:none;
+    font-weight:600;
+    font-size:13.5px;
+  }
+  .btn.ghost:hover{
+    background:rgba(247,236,219,0.1);
+  }
+
+  /* ---------- Panduan ---------- */
+  .panduan-btn{
+    display:block;
+    text-align:center;
+    text-decoration:none;
+    font-weight:700;
+    font-size:13px;
+    letter-spacing:0.03em;
+    color:var(--cream-050);
+    padding:14px 18px;
+    border-radius:14px;
+    background:linear-gradient(180deg, rgba(90,24,16,0.9), rgba(58,15,12,0.9));
+    border:1px solid var(--line);
+    position:relative;
+  }
+  .panduan-btn::before{
+    content:"📘";
+    margin-right:8px;
+  }
+
+  /* ---------- ID Card section ---------- */
+  .idcard-wrap{
+    position:relative;
+    border-radius:24px;
+    padding:28px 18px 22px;
+    background:radial-gradient(120% 140% at 50% 0%, rgba(122,36,20,0.55), rgba(32,8,10,0.2));
+    border:1px solid var(--line);
+    text-align:center;
+  }
+  .idcard-title{
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size:18px;
+    color:var(--cream-050);
+    margin-bottom:18px;
+  }
+  .idcard-title em{ color:var(--gold-500); font-style:italic; }
+
+  .idcard-showcase{
+    position:relative;
+    margin-bottom:20px;
+  }
+  .idcard-pair{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+  }
+  .idcard-pair img{
+    display:block;
+    width:50%;
+    max-width:210px;
+    height:auto;
+    border-radius:12px;
+    box-shadow: 0 10px 26px rgba(0,0,0,0.45);
+  }
+  .idcard-pair .idcard-front{ transform: rotate(-2deg); }
+  .idcard-pair .idcard-back{ transform: rotate(2deg); }
+
+  .idcard-ribbon{
+    display:block;
+    position:relative;
+    margin:-14px auto 0;
+    width:92%;
+    text-align:center;
+    padding:11px 10px;
+    border-radius:999px;
+    text-decoration:none;
+    font-family:'Plus Jakarta Sans', sans-serif;
+    font-weight:800;
+    font-size:13.5px;
+    letter-spacing:0.03em;
+    text-transform:uppercase;
+    color:var(--maroon-950);
+    background:linear-gradient(90deg, var(--amber-600), var(--gold-400) 50%, var(--amber-600));
+    box-shadow: 0 10px 22px rgba(232,121,46,0.35), inset 0 1px 0 rgba(255,255,255,0.4);
+    border:1px solid rgba(255,224,170,0.65);
+    z-index:2;
+  }
+
+  /* ---------- Sosial Media ---------- */
+  .social-section{
+    margin-top:34px;
+    text-align:center;
+  }
+  .social-row{
+    display:flex;
+    justify-content:center;
+    gap:16px;
+  }
+  .social-icon{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:52px;
+    height:52px;
+    border-radius:999px;
+    background:rgba(247,236,219,0.06);
+    border:1.5px solid var(--gold-500);
+    color:var(--cream-050);
+    transition: transform .18s ease, background .18s ease;
+  }
+  .social-icon:hover{
+    transform: translateY(-3px);
+    background:rgba(242,166,61,0.15);
+  }
+  .social-icon svg{
+    width:22px;
+    height:22px;
+  }
+
+  /* ---------- Footer / Admin ---------- */
+  footer{
+    margin-top:38px;
+    text-align:center;
+  }
+  .footnote{
+    margin-top:26px;
+    font-size:11.5px;
+    color:rgba(247,236,219,0.55);
+    text-align:center;
+    line-height:1.6;
+  }
+</style>
+</head>
+<body>
+
+<!-- =====================================================================
+     PETUNJUK MENGGANTI GAMBAR (baca sebelum edit)
+     Semua gambar disimpan sebagai file terpisah di folder images/,
+     jadi cukup timpa (replace) filenya dengan nama yang SAMA — tidak
+     perlu mengubah kode HTML/CSS sama sekali:
+
+     1. images/hero-mastamaru.jpg   -> gambar logo/hero Mastamaru
+     2. images/idcard-front.png     -> desain kartu ID sisi depan
+     3. images/idcard-back.png      -> desain kartu ID sisi belakang
+     4. images/background.jpg       -> tekstur latar belakang halaman
+
+     Kalau mau pakai nama file lain, ubah juga path "src" / "url(...)"
+     yang bersangkutan di kode di bawah.
+     ===================================================================== -->
+
+<div class="page-bg"></div>
+
+<div class="frame">
+
+  <header>
+    <div class="eyebrow">Universitas Muhammadiyah Ponorogo</div>
+    <p class="subtitle">Update Sistem Presensi <b>Mastamaru</b> UMPO 2026</p>
+  </header>
+
+  <!-- GANTI GAMBAR HERO/LOGO: timpa file images/hero-mastamaru.jpg -->
+  <div class="hero">
+    <img src="images/hero-mastamaru.jpg" alt="Mastamaru UMPO 2026 — Karsa Humanis, Kampus Harmonis">
+    <div class="hero-caption"><span>Karsa Humanis, Kampus Harmonis</span></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Keperluan <em>Mahasiswa</em></div>
+    <div class="section-rule"></div>
+    <div class="btn-stack">
+      <a href="#" class="btn">Link QR-Code Peserta</a>
+      <a href="#" class="btn secondary">Link Data Kelompok Peserta Public</a>
+      <a href="#" class="btn ghost">Link Input Manual</a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Buku Panduan <em>Mastamaru</em></div>
+    <div class="section-rule"></div>
+    <a href="Panduan.pdf" class="panduan-btn">BUKU PANDUAN MASTAMARU 2026</a>
+  </div>
+
+  <div class="section">
+    <div class="idcard-wrap">
+      <div class="idcard-title">ID Card <em>Mastamaru</em></div>
+
+      <!-- GANTI DESAIN KARTU ID: timpa images/idcard-front.png (depan) dan
+           images/idcard-back.png (belakang) dengan desain final kalian -->
+      <div class="idcard-showcase">
+        <div class="idcard-pair">
+          <img class="idcard-front" src="images/idcard-front.png" alt="Kartu ID Mastamaru — sisi depan">
+          <img class="idcard-back" src="images/idcard-back.png" alt="Kartu ID Mastamaru — sisi belakang">
+        </div>
+        <a href="Idcard.pdf" class="idcard-ribbon">Download ID Card</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- GANTI LINK TIKTOK & INSTAGRAM: isi href="#" di bawah dengan URL profil kalian -->
+  <div class="social-section">
+    <div class="section-label">Ikuti <em>Kami</em></div>
+    <div class="section-rule"></div>
+    <div class="social-row">
+      <a href="https://www.tiktok.com/@mastamaru.umpo?is_from_webapp=1&sender_device=pc" class="social-icon" aria-label="TikTok Mastamaru" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 5.82c-.9-.85-1.47-2.02-1.6-3.32h-3.03v13.44c0 1.5-1.22 2.72-2.72 2.72a2.72 2.72 0 0 1 0-5.44c.28 0 .55.04.8.12V10.3a5.7 5.7 0 0 0-.8-.06 5.75 5.75 0 1 0 5.75 5.75V9.01a8.63 8.63 0 0 0 4.6 1.33V7.3a5.6 5.6 0 0 1-3-1.48z"/></svg>
+      </a>
+      <a href="https://www.instagram.com/mastamaru.umpo?utm_source=ig_web_button_share_sheet&igsi=ZDNlZDc0MzIxNw==" class="social-icon" aria-label="Instagram Mastamaru" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <footer>
+    <div class="section-label">Admin <em>Call Center</em></div>
+    <div class="section-rule"></div>
+    <a href="https://wa.me/6285216118968" class="btn secondary" style="max-width:260px; margin:0 auto;">Hubungi Admin</a>
+    <p class="footnote">Mastamaru UMPO 2026 — Universitas Muhammadiyah Ponorogo</p>
+  </footer>
+
+</div>
+
+</body>
+</html>
