@@ -280,6 +280,47 @@
     z-index:2;
   }
 
+  /* ---------- See Memorize (tombol khusus) ---------- */
+  .memorize-section{
+    margin-top:34px;
+    text-align:center;
+  }
+  .btn-memorize{
+    position:relative;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:9px;
+    margin:0 auto;
+    padding:14px 30px;
+    text-decoration:none;
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-weight:700;
+    font-size:15px;
+    letter-spacing:0.02em;
+    color:var(--gold-400);
+    background:
+      linear-gradient(var(--maroon-900), var(--maroon-900)) padding-box,
+      linear-gradient(135deg, var(--gold-500), var(--cream-050) 45%, var(--amber-600)) border-box;
+    border:1.5px solid transparent;
+    border-radius:16px;
+    box-shadow: 0 0 0 1px rgba(242,166,61,0.15), 0 14px 30px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06);
+    transition: transform .18s ease, box-shadow .18s ease, color .18s ease;
+  }
+  .btn-memorize::before{
+    content:"✦";
+    font-style:normal;
+    font-size:13px;
+    color:var(--gold-500);
+  }
+  .btn-memorize:hover{
+    transform: translateY(-2px);
+    color:var(--cream-050);
+    box-shadow: 0 0 0 1px rgba(242,166,61,0.3), 0 18px 36px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+  }
+  .btn-memorize:active{ transform: translateY(0); }
+
   /* ---------- Sosial Media ---------- */
   .social-section{
     margin-top:34px;
@@ -387,6 +428,14 @@
         <a href="Idcard.pdf" class="idcard-ribbon">Download ID Card</a>
       </div>
     </div>
+  </div>
+
+  <!-- TOMBOL: See Memorize -> menuju halaman kenangan.html
+       Pastikan file kenangan.html berada di folder yang sama dengan file ini.
+       Kalau nanti kenangan.html dipindah/di-hosting di URL lain, tinggal
+       ganti href di bawah ini. -->
+  <div class="memorize-section">
+    <a href="kenangan.html" class="btn-memorize">See Memorize</a>
   </div>
 
   <!-- GANTI LINK TIKTOK & INSTAGRAM: isi href="#" di bawah dengan URL profil kalian -->
