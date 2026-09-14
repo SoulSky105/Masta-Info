@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kenangan PKKMB MastaMaru 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --burgundy: #4B0D1A;
+    --black: #0D0D0D;
+    --gold: #C7A142;
+    --espresso: #2B1E16;
+    --champagne: #F2E6C9;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  body{
+    min-height:100vh;
+    background:
+      radial-gradient(ellipse at 15% 0%, rgba(75,13,26,0.55), transparent 55%),
+      radial-gradient(ellipse at 85% 100%, rgba(75,13,26,0.5), transparent 55%),
+      var(--black);
+    color: var(--champagne);
+    font-family: 'Cormorant Garamond', serif;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding: 64px 24px 80px;
+    overflow-x:hidden;
+    position:relative;
+  }
+
+  .ribbon{
+    position:fixed;
+    width: 420px;
+    height: 420px;
+    pointer-events:none;
+    opacity:0.5;
+    z-index:0;
+  }
+  .ribbon.tl{ top:-140px; left:-140px; background: radial-gradient(circle, rgba(199,161,66,0.18), transparent 70%); }
+  .ribbon.br{ bottom:-140px; right:-140px; background: radial-gradient(circle, rgba(75,13,26,0.5), transparent 70%); }
+
+  header{
+    text-align:center;
+    margin-bottom: 56px;
+    z-index:1;
+    max-width: 560px;
+  }
+
+  .eyebrow{
+    font-style: italic;
+    font-size: 1.05rem;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+    opacity:0.85;
+    margin-bottom: 10px;
+  }
+
+  h1{
+    font-family:'Playfair Display', serif;
+    font-weight: 600;
+    font-size: clamp(2.2rem, 5.5vw, 3.4rem);
+    color: var(--champagne);
+    letter-spacing: 0.02em;
+    line-height: 1.15;
+  }
+
+  .divider{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap: 14px;
+    margin-top: 22px;
+  }
+  .divider .line{ width: 64px; height: 1px; background: linear-gradient(to right, transparent, var(--gold)); }
+  .divider .line.right{ background: linear-gradient(to left, transparent, var(--gold)); }
+  .divider .mark{ color: var(--gold); font-size: 1.1rem; }
+
+  .subtitle{
+    margin-top: 20px;
+    font-size: 1.15rem;
+    color: var(--champagne);
+    opacity: 0.75;
+  }
+
+  /* Hari 1 — hero card, centered, still floats like the others */
+  .hero-wrap{
+    z-index:1;
+    display:flex;
+    justify-content:center;
+    margin-bottom: 60px;
+  }
+  .hero-wrap .card{
+    width: 260px;
+    transform: rotate(-3deg) translateY(-6px) scale(1.05);
+    box-shadow: 0 28px 56px rgba(0,0,0,0.65);
+  }
+  .hero-wrap .card:hover{ transform: rotate(-3deg) translateY(-16px) scale(1.08); z-index:10; }
+
+  /* "Harinya telah tiba" divider (kept for reference, unused visually if not needed) */
+  .arrival{
+    z-index:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap: 18px;
+    margin-bottom: 50px;
+    width:100%;
+    max-width: 420px;
+  }
+  .arrival .line{ flex:1; height:1px; background: linear-gradient(to right, transparent, var(--gold), transparent); }
+  .arrival span.text{
+    font-family:'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 1.3rem;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+
+  /* Hari 2-5 — explicit 2x2 grid: Hari 2/3 on row one, Hari 4/5 on row two */
+  .days-row{
+    z-index:1;
+    display:grid;
+    grid-template-columns: repeat(2, 210px);
+    row-gap: 56px;
+    column-gap: 30px;
+    justify-content:center;
+    max-width: 900px;
+    width:100%;
+  }
+
+  .days-row .card{ position:relative; z-index:1; }
+
+  .days-row .card:nth-child(1){ transform: rotate(-6deg) translateY(16px); }
+  .days-row .card:nth-child(2){ transform: rotate(4deg)  translateY(-12px); }
+  .days-row .card:nth-child(3){ transform: rotate(-4deg) translateY(-10px); }
+  .days-row .card:nth-child(4){ transform: rotate(6deg)  translateY(14px); }
+
+  .days-row .card:nth-child(1):hover{ transform: rotate(-6deg) translateY(4px) scale(1.05); z-index:10; }
+  .days-row .card:nth-child(2):hover{ transform: rotate(4deg)  translateY(-24px) scale(1.05); z-index:10; }
+  .days-row .card:nth-child(3):hover{ transform: rotate(-4deg) translateY(-22px) scale(1.05); z-index:10; }
+  .days-row .card:nth-child(4):hover{ transform: rotate(6deg)  translateY(2px) scale(1.05); z-index:10; }
+
+  .card{
+    position:relative;
+    background: linear-gradient(165deg, var(--espresso), var(--black));
+    border: 1px solid rgba(199,161,66,0.5);
+    border-radius: 16px;
+    overflow:hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.55);
+    display:flex;
+    flex-direction:column;
+    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+  }
+  .card:hover{
+    box-shadow: 0 28px 54px rgba(0,0,0,0.65);
+    border-color: var(--gold);
+  }
+
+  .card .photo{
+    aspect-ratio: 4/5;
+    position:relative;
+    overflow:hidden; /* keep the image/placeholder from ever spilling into the body below */
+    border-bottom: 1px solid rgba(199,161,66,0.4);
+    background: var(--espresso);
+  }
+  .card .photo img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+  /* Placeholder is an absolutely-positioned fallback layer, shown only when
+     the photo fails to load (via onerror below). pointer-events:none means
+     it can never sit on top of, or block clicks on, anything else. */
+  .card .photo .placeholder{
+    position:absolute;
+    inset:0;
+    display:none;
+    align-items:center; justify-content:center;
+    flex-direction:column; gap:8px;
+    color: var(--gold); opacity:0.5;
+    pointer-events:none;
+  }
+  .card .photo img.broken{ display:none; }
+  .card .photo img.broken + .placeholder{ display:flex; }
+  .card .photo .placeholder svg{ width:28px; height:28px; }
+
+  .card .day-tag{
+    position:absolute;
+    top:12px; left:12px;
+    font-family:'Playfair Display', serif;
+    font-weight:600;
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    color: var(--black);
+    background: var(--gold);
+    padding: 4px 12px;
+    border-radius: 999px;
+    z-index:2;
+  }
+
+  .card .body{
+    position:relative;
+    z-index:2;
+    padding: 16px 16px 18px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap: 10px;
+    text-align:center;
+  }
+
+  .card .body h3{
+    font-family:'Playfair Display', serif;
+    font-weight:600;
+    font-size: 1.15rem;
+    color: var(--champagne);
+    letter-spacing: 0.01em;
+  }
+
+  .card .cta{
+    position:relative;
+    z-index:3;
+    display:inline-flex;
+    align-items:center;
+    gap: 7px;
+    padding: 9px 20px;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-style: italic;
+    font-size: 0.98rem;
+    color: var(--black);
+    background: linear-gradient(135deg, #E4C464, var(--gold));
+    border-radius: 999px;
+    text-decoration: none;
+    box-shadow: 0 8px 18px rgba(199,161,66,0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+  }
+  .card .cta:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(199,161,66,0.45);
+  }
+  .card .cta svg{ width:14px; height:14px; }
+
+  footer{
+    margin-top: 56px;
+    font-size: 0.95rem;
+    font-style: italic;
+    color: var(--champagne);
+    opacity: 0.45;
+    z-index:1;
+  }
+
+  @media (max-width: 760px){
+    .days-row{
+      grid-template-columns: repeat(2, 140px);
+      row-gap: 40px;
+      column-gap: 16px;
+    }
+    .days-row .card:nth-child(1),.days-row .card:nth-child(2),
+    .days-row .card:nth-child(3),.days-row .card:nth-child(4){
+      transform: rotate(0deg) translateY(0px);
+    }
+    .hero-wrap .card{ width: 220px; transform: rotate(-2deg) scale(1.02); }
+    .arrival span.text{ font-size: 1.1rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .card, .cta{ transition: none; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="ribbon tl"></div>
+  <div class="ribbon br"></div>
+
+  <header>
+    <div class="eyebrow">MastaMaru 2026</div>
+    <h1>Kenangan yang<br>Tak Lekang Waktu</h1>
+    <div class="divider">
+      <span class="line"></span>
+      <span class="mark">✦</span>
+      <span class="line right"></span>
+    </div>
+    <p class="subtitle">5 momen, satu cerita. Pilih harinya, buka lagi kenangannya.</p>
+  </header>
+
+  <div class="hero-wrap">
+    <div class="card">
+      <div class="photo">
+        <span class="day-tag">Hari 1</span>
+        <img src="Day/hari1.png" alt="Hari 1 — Kolase momen pembukaan Mastamaru 2026" onerror="this.classList.add('broken')">
+        <div class="placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.2"/><path d="M8 6l1.5-2h5L16 6"/></svg>
+        </div>
+      </div>
+      <div class="body">
+        <h3>Hari Pertama</h3>
+        <a class="cta" href="https://photos.app.goo.gl/7vBPd2EToCKMiNuy5" target="_blank" rel="noopener">
+          Lihat Kenangan
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="days-row">
+
+    <div class="card">
+      <div class="photo">
+        <span class="day-tag">Hari 2</span>
+        <img src="Day/hari2.png" alt="Hari 2 — Kolase momen kedua Mastamaru 2026" onerror="this.classList.add('broken')">
+        <div class="placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.2"/><path d="M8 6l1.5-2h5L16 6"/></svg>
+        </div>
+      </div>
+      <div class="body">
+        <h3>Hari Kedua</h3>
+        <a class="cta" href="https://photos.app.goo.gl/rgnH6ReYAyTBmtX47" target="_blank" rel="noopener">
+          Lihat Kenangan
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="photo">
+        <span class="day-tag">Hari 3</span>
+        <img src="Day/hari3.png" alt="Hari 3 — Kolase momen ketiga Mastamaru 2026" onerror="this.classList.add('broken')">
+        <div class="placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.2"/><path d="M8 6l1.5-2h5L16 6"/></svg>
+        </div>
+      </div>
+      <div class="body">
+        <h3>Hari Ketiga</h3>
+        <a class="cta" href="https://photos.app.goo.gl/2ujSojnSGr4diZYK9" target="_blank" rel="noopener">
+          Lihat Kenangan
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="photo">
+        <span class="day-tag">Hari 4</span>
+        <img src="Day/hari4.png" alt="Hari 4 — Kolase momen keempat Mastamaru 2026" onerror="this.classList.add('broken')">
+        <div class="placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.2"/><path d="M8 6l1.5-2h5L16 6"/></svg>
+        </div>
+      </div>
+      <div class="body">
+        <h3>Hari Keempat</h3>
+        <a class="cta" href="https://photos.app.goo.gl/ka6ThbPrYPCW2NRc8" target="_blank" rel="noopener">
+          Lihat Kenangan
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="photo">
+        <span class="day-tag">Hari 5</span>
+        <img src="Day/hari5.png" alt="Hari 5 — Kolase momen kelima Mastamaru 2026" onerror="this.classList.add('broken')">
+        <div class="placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.2"/><path d="M8 6l1.5-2h5L16 6"/></svg>
+        </div>
+      </div>
+      <div class="body">
+        <h3>Hari Kelima</h3>
+        <a class="cta" href="https://photos.app.goo.gl/Xk1ZcdTRNPuseEtp7" target="_blank" rel="noopener">
+          Lihat Kenangan
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>disimpan dengan hati, dibuka dengan senyum</footer>
+
+</body>
+</html>
